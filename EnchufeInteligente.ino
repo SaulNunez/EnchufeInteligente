@@ -20,7 +20,7 @@ void wifiDeviceSetupSetup(){
   
   WiFi.softAP("El poderoso enchufe inteligente :D", "1234");
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(LittleFS, "/wifi_info.html", String(), false, processor);
+    request->send(LittleFS, "/wifi_info.html", String(), false);
   });
   server.begin();
   Serial.println("HTTP server started");
