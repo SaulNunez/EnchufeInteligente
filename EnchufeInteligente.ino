@@ -83,7 +83,7 @@ if(!LittleFS.begin()){
     return;
   }
 
-  if(!LittleFS.exists("/wifi.conf")){
+  if(LittleFS.exists("/wifi.conf")){
     mode = justPlug;
     normalOperationSetup();
   } else {
