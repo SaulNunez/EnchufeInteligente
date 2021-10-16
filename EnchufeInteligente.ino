@@ -8,6 +8,11 @@ AsyncWebServer server(80);
 #include <fauxmoESP.h>
 fauxmoESP fauxmo;
 
+enum operationMode {
+  askWifiCredentials,
+  justPlug
+};
+
 // Setup code necesary for setup mode
 // We need to enable stuff to discover networks before creating a soft AP
 // In which the user can give their network credential before normal usage
@@ -70,9 +75,7 @@ void normalOperationSetup(){
     });
 }
 
-void normalOperationLoop(){
-    fauxmo.handle();
-}
+operationMode mode;
 
 void setup() {
 if(!LittleFS.begin()){
@@ -81,12 +84,22 @@ if(!LittleFS.begin()){
   }
 
   if(!LittleFS.exists("/wifi.conf")){
+    mode = justPlug;
     normalOperationSetup();
   } else {
+    mode = askWifiCredentials;
     wifiDeviceSetupSetup();
   }
 }
 
 void loop() {
+  switch (mode)
+  {
+  case askWifiCredentials:
+    fauxmo.handle();
+    break;
   
+  default:
+    break;
+  }
 }
