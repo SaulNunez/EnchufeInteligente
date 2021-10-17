@@ -21,6 +21,8 @@ void wifiDeviceSetupSetup(){
   // Shut down old connection to another AP
   WiFi.disconnect();
 
+  Serial.println("Creating wifi network");
+
   delay(100);
   
   WiFi.softAP("El poderoso enchufe inteligente :D", "1234");
@@ -78,6 +80,8 @@ void normalOperationSetup(){
 operationMode mode;
 
 void setup() {
+Serial.begin(115200);
+Serial.setDebugOutput(true);
 if(!LittleFS.begin()){
     Serial.println("An Error has occurred while mounting LittleFS");
     return;
