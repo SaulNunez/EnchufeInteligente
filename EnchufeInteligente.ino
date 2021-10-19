@@ -17,16 +17,26 @@ enum operationMode {
 // We need to enable stuff to discover networks before creating a soft AP
 // In which the user can give their network credential before normal usage
 void wifiDeviceSetupSetup(){
-  WiFi.mode(WIFI_STA);
-  // Shut down old connection to another AP
-  WiFi.disconnect();
-
-  delay(100);
-  
-  WiFi.softAP("El poderoso enchufe inteligente :D", "1234");
+  WiFi.softAP("IntelliPlug1");
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(LittleFS, "/wifi_info.html", String(), false);
   });
+
+  server.on("/available_networks", HTTP_GET, [](AsyncWebServerRequest *request){
+    String returnObj = "{ \"wifiNetworks\": [";
+    int networksFound = WiFi.scanNetworks();
+    for(int i = 0; i < networksFound; i++){
+      returnObj.concat("\"" + WiFi.SSID(i) + "\"");
+      if(i != networksFound - 1){
+        returnObj.concat(",");
+      }
+    }
+    returnObj.concat("] }");
+    Serial.println(returnObj);
+
+    request->send(200, "application/json", returnObj);
+  });
+
   server.on("/wifi_info", HTTP_POST, [](AsyncWebServerRequest *request){
     String ssid;
     String password;
