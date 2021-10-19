@@ -60,7 +60,18 @@ void wifiDeviceSetupSetup(){
   Serial.println("HTTP server started");
 }
 
+const char* enchufeUno = "Enchufe Uno";
+const char* enchufeDos = "Enchufe Dos";
+
+#define RELAY_ENCHUFE_1 16
+#define RELAY_ENCHUFE_2 24
+
 void normalOperationSetup(){
+  pinMode(RELAY_ENCHUFE_1, OUTPUT);
+  pinMode(RELAY_ENCHUFE_2, OUTPUT);
+  digitalWrite(RELAY_ENCHUFE_1, LOW);
+  digitalWrite(RELAY_ENCHUFE_2, LOW);
+
   //Encender wifi
   WiFi.mode(WIFI_STA);
 
@@ -77,13 +88,20 @@ void normalOperationSetup(){
 
   WiFi.begin(ssid, password);
 
-  fauxmo.addDevice("Enchufe Uno");
-
+  fauxmo.createServer(true);
   fauxmo.setPort(80);
   fauxmo.enable(true);
 
+  fauxmo.addDevice(enchufeUno);
+  fauxmo.addDevice(enchufeDos);
+
   fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned char value) {
         Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "ON" : "OFF", value);
+        if(strcmp(device_name,enchufeUno) == 0){
+          digitalWrite(RELAY_ENCHUFE_1, state? HIGH: LOW);
+        } else if(strcmp(device_name, enchufeDos) == 0){
+          digitalWrite(RELAY_ENCHUFE_2, state? HIGH: LOW);
+        }
     });
 }
 
