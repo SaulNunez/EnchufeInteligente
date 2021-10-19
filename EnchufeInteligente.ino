@@ -123,13 +123,7 @@ if(!LittleFS.begin()){
 }
 
 void loop() {
-  switch (mode)
-  {
-  case askWifiCredentials:
+  if(mode == justPlug){
     fauxmo.handle();
-    break;
-  
-  default:
-    break;
   }
 }
