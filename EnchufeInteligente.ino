@@ -18,6 +18,8 @@ enum operationMode {
 // In which the user can give their network credential before normal usage
 void wifiDeviceSetupSetup(){
   WiFi.softAP("IntelliPlug1");
+  Serial.println("AP address:" + WiFi.softAPIP().toString());
+
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(LittleFS, "/wifi_info.html", String(), false);
   });
