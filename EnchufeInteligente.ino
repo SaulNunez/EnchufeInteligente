@@ -63,8 +63,8 @@ void wifiDeviceSetupSetup(){
 const char* enchufeUno = "Enchufe Uno";
 const char* enchufeDos = "Enchufe Dos";
 
-#define RELAY_ENCHUFE_1 16
-#define RELAY_ENCHUFE_2 24
+#define RELAY_ENCHUFE_1 D1
+#define RELAY_ENCHUFE_2 D2
 
 void normalOperationSetup(){
   pinMode(RELAY_ENCHUFE_1, OUTPUT);
