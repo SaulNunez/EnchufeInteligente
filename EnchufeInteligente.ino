@@ -116,6 +116,8 @@ void normalOperationSetup(){
 operationMode mode;
 
 void setup() {
+Serial.begin(115200);
+Serial.setDebugOutput(true);
 if(!LittleFS.begin()){
     Serial.println("An Error has occurred while mounting LittleFS");
     return;
