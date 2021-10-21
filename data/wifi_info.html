@@ -27,13 +27,39 @@
   <h1>Bienvenido</h1>
   <p>Gracias por usar el enchufe inteligente.</p>
   <p>Para comenzar escribe la información de red.</p>
+  <button onclick="updateSSIDInformation()">Escanear redes</button>
   <form action="/setup-info" method="post" autocomplete="on">
       <label for="ssid">Nombre de la red:</label>
-      <input type="text" id="ssid" name="ssid" /><br/>
+      <input list="found_ssids" type="text" id="ssid" name="ssid" /><br/>
+      <datalist id="found_ssids"></datalist>
       <label for="password">Contraseña de la red:</label>
       <input type="password" id="password" name="password" /><br />
-      <input type="submit" value="submit" />
+      <input type="submit" value="Guardar datos de conexión" />
   </form>
-  <script src="js/scripts.js"></script>
+  <script>
+    async function updateSSIDInformation(){
+      const datalist = document.getElementById("found_ssids");
+      const response = await fetch('/available_networks');
+      try{
+        // Quitar elementos preexistentes en la lista
+        while(datalist.lastElementChild){
+          datalist.removeChild(datalist.lastElementChild);
+        }
+
+        const ssids = await response.json["wifiNetworks"];
+        for(let ssid of ssids){
+          const ssidOption = document.createElement('option');
+          ssidOption.innerHTML = ssid;
+          ssidOption.value = ssid;
+
+          datalist.appendChild(ssidOption);
+        }
+      } catch(e){
+        console.error(e);
+      }
+    }
+
+    object.addEventListener("load", updateSSIDInformation);
+  </script>
 </body>
 </html>
