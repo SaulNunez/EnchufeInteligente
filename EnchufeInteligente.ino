@@ -3,6 +3,8 @@
 #include <fauxmoESP.h>
 #include <ESP8266WiFi.h>
 #include "LittleFS.h"
+#include <ESP8266mDNS.h>
+
 AsyncWebServer server(80);
 
 #include <fauxmoESP.h>
@@ -19,6 +21,10 @@ enum operationMode {
 void wifiDeviceSetupSetup(){
   WiFi.softAP("IntelliPlug1");
   Serial.println("AP address:" + WiFi.softAPIP().toString());
+
+  if(!MDNS.begin("intelliplug")){
+    Serial.println("Failed to set MDNS config");
+  }
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(LittleFS, "/wifi_info.html", String(), false);
@@ -58,6 +64,8 @@ void wifiDeviceSetupSetup(){
   });
   server.begin();
   Serial.println("HTTP server started");
+
+  MDNS.addService("http", "tcp", 80);
 }
 
 const char* enchufeUno = "Enchufe Uno";
@@ -125,5 +133,7 @@ if(!LittleFS.begin()){
 void loop() {
   if(mode == justPlug){
     fauxmo.handle();
+  } else if(mode == askWifiCredentials){
+    MDNS.update();
   }
 }
