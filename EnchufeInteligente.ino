@@ -33,6 +33,7 @@ void wifiDeviceSetupSetup(){
   server.on("/available_networks", HTTP_GET, [](AsyncWebServerRequest *request){
     String returnObj = "{ \"wifiNetworks\": [";
     int networksFound = WiFi.scanNetworks();
+    Serial.println("Networks found: " + networksFound);
     for(int i = 0; i < networksFound; i++){
       returnObj.concat("\"" + WiFi.SSID(i) + "\"");
       if(i != networksFound - 1){
@@ -76,6 +77,8 @@ const char* enchufeDos = "Enchufe Dos";
 #define RELAY_ENCHUFE_2 D2
 
 void normalOperationSetup(){
+  Serial.println("IoT mode");
+  
   pinMode(RELAY_ENCHUFE_1, OUTPUT);
   pinMode(RELAY_ENCHUFE_2, OUTPUT);
   digitalWrite(RELAY_ENCHUFE_1, LOW);
