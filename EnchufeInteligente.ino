@@ -49,7 +49,7 @@ void wifiDeviceSetupSetup(){
     String ssid;
     String password;
 
-    AsyncWebParameter* ssidParam = request->getParam("wifi");
+    AsyncWebParameter* ssidParam = request->getParam("ssid");
     ssid = ssidParam->value().c_str();
     AsyncWebParameter* passwordParam = request->getParam("password");
     password = passwordParam->value().c_str();
