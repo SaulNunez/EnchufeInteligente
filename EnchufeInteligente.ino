@@ -57,6 +57,7 @@ void wifiDeviceSetupSetup(){
 
     File f = LittleFS.open("/wifi.conf", "w");
     if(!f){
+      request->send(500);
       return;
     }
     f.write(("ssid:" + ssid + "\n" + "password:" + password).c_str());
