@@ -60,6 +60,7 @@ void wifiDeviceSetupSetup(){
     }
     f.write(("ssid:" + ssid + "\n" + "password:" + password).c_str());
     f.close();
+    request->send(200);
     ESP.restart();
   });
   server.begin();
