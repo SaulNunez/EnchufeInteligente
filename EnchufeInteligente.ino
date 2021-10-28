@@ -50,6 +50,7 @@ void wifiDeviceSetupSetup(){
       ssid = ssidParam->value();
     } else {
       request->send(400, "text/plain", "SSID parameter not found");
+      return;
     }
 
     if(request->hasParam("password", true)){
@@ -57,6 +58,7 @@ void wifiDeviceSetupSetup(){
       password = passwordParam->value();
     } else {
       request->send(400, "text/plain", "Password parameter not found");
+      return;
     }
 
     Serial.println(("ssid:" + ssid + "\n" + "password:" + password).c_str());
