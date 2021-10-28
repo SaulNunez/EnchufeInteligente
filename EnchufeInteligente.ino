@@ -55,11 +55,14 @@ void wifiDeviceSetupSetup(){
     AsyncWebParameter* passwordParam = request->getParam("password");
     password = passwordParam->value().c_str();
 
+    Serial.println(("ssid:" + ssid + "\n" + "password:" + password).c_str());
+
     File f = LittleFS.open("/wifi.conf", "w");
     if(!f){
       request->send(500);
       return;
     }
+    Serial.println("Saving connection parameters...");
     f.write(("ssid:" + ssid + "\n" + "password:" + password).c_str());
     f.close();
     request->send(200);
