@@ -45,10 +45,19 @@ void wifiDeviceSetupSetup(){
     String ssid;
     String password;
 
-    AsyncWebParameter* ssidParam = request->getParam("ssid");
-    ssid = ssidParam->value().c_str();
-    AsyncWebParameter* passwordParam = request->getParam("password");
-    password = passwordParam->value().c_str();
+    if(request->hasParam("ssid", true)){
+      AsyncWebParameter* ssidParam = request->getParam("ssid");
+      ssid = ssidParam->value();
+    } else {
+      request->send(400, "text/plain", "SSID parameter not found");
+    }
+
+    if(request->hasParam("password", true)){
+      AsyncWebParameter* passwordParam = request->getParam("password");
+      password = passwordParam->value();
+    } else {
+      request->send(400, "text/plain", "Password parameter not found");
+    }
 
     Serial.println(("ssid:" + ssid + "\n" + "password:" + password).c_str());
 
