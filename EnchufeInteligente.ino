@@ -46,14 +46,14 @@ void wifiDeviceSetupSetup(){
     String password;
 
     if(request->hasParam("ssid", true)){
-      AsyncWebParameter* ssidParam = request->getParam("ssid");
+      AsyncWebParameter* ssidParam = request->getParam("ssid", true);
       ssid = ssidParam->value();
     } else {
       request->send(400, "text/plain", "SSID parameter not found");
     }
 
     if(request->hasParam("password", true)){
-      AsyncWebParameter* passwordParam = request->getParam("password");
+      AsyncWebParameter* passwordParam = request->getParam("password", true);
       password = passwordParam->value();
     } else {
       request->send(400, "text/plain", "Password parameter not found");
